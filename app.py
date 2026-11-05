@@ -11,9 +11,8 @@ from pypdf import PdfReader
 from groq import Groq
 from sentence_transformers import SentenceTransformer
 
-# ---------------------------------------------------------------------------
 # Config
-# ---------------------------------------------------------------------------
+
 CHAT_MODEL = "llama-3.3-70b-versatile"  #groq
 EMBED_MODEL_NAME = "all-MiniLM-L6-v2"   
 CHUNK_SIZE = 1200      
