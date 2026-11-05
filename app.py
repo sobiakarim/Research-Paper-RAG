@@ -14,11 +14,11 @@ from sentence_transformers import SentenceTransformer
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-CHAT_MODEL = "llama-3.3-70b-versatile"   # fast, free on Groq
-EMBED_MODEL_NAME = "all-MiniLM-L6-v2"    # local, free, no API needed
-CHUNK_SIZE = 1200       # characters per chunk
+CHAT_MODEL = "llama-3.3-70b-versatile"  #groq
+EMBED_MODEL_NAME = "all-MiniLM-L6-v2"   
+CHUNK_SIZE = 1200      
 CHUNK_OVERLAP = 200
-TOP_K = 5               # chunks retrieved per question
+TOP_K = 5              
 STORE_DIR = "store"
 
 os.makedirs(STORE_DIR, exist_ok=True)
@@ -30,18 +30,16 @@ st.set_page_config(page_title="Research Paper Assistant", layout="wide")
 def load_embedder():
     return SentenceTransformer(EMBED_MODEL_NAME)
 
-# ---------------------------------------------------------------------------
 # Session state
-# ---------------------------------------------------------------------------
+
 if "papers" not in st.session_state:
     # papers: { filename: {"chunks": [...], "embeddings": np.array, "summary": str, "findings": str} }
     st.session_state.papers = {}
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# ---------------------------------------------------------------------------
 # Sidebar — API key & upload
-# ---------------------------------------------------------------------------
+
 st.sidebar.title("⚙️ Settings")
 api_key = st.sidebar.text_input("Groq API Key", type="password", value=os.environ.get("GROQ_API_KEY", ""))
 st.sidebar.caption("Free key: https://console.groq.com/keys")
@@ -56,9 +54,8 @@ embedder = load_embedder()
 st.sidebar.markdown("---")
 uploaded_files = st.sidebar.file_uploader("Upload research papers (PDF)", type=["pdf"], accept_multiple_files=True)
 
-# ---------------------------------------------------------------------------
 # Helper functions
-# ---------------------------------------------------------------------------
+
 def extract_text(pdf_bytes: bytes) -> str:
     reader = PdfReader(io.BytesIO(pdf_bytes))
     text = []
@@ -153,17 +150,15 @@ def process_paper(filename, pdf_bytes):
         }
 
 
-# ---------------------------------------------------------------------------
 # Handle uploads
-# ---------------------------------------------------------------------------
+
 if uploaded_files:
     for f in uploaded_files:
         if f.name not in st.session_state.papers:
             process_paper(f.name, f.read())
 
-# ---------------------------------------------------------------------------
 # Main UI
-# ---------------------------------------------------------------------------
+
 st.title("📚 Research Paper Assistant")
 st.caption("Upload papers, get summaries and key findings, then ask questions across your library.")
 
